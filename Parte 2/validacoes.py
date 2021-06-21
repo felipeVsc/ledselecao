@@ -6,7 +6,7 @@ class Validacoes:
     def validacaoDadosEmBranco(self):
         categorias = ["document_id","paciente_id","paciente_idade","paciente_datanascimento","paciente_enumsexobiologico","paciente_racacor_codigo","paciente_racacor_valor","paciente_endereco_coibgemunicipio","paciente_endereco_copais","paciente_endereco_nmmunicipio","paciente_endereco_nmpais","paciente_endereco_uf","paciente_endereco_cep","paciente_nacionalidade_enumnacionalidade","estabelecimento_valor","estabelecimento_razaosocial","estalecimento_nofantasia","estabelecimento_municipio_codigo","estabelecimento_municipio_nome","estabelecimento_uf","vacina_grupoatendimento_codigo","vacina_grupoatendimento_nome","vacina_categoria_codigo","vacina_categoria_nome","vacina_lote","vacina_fabricante_nome","vacina_fabricante_referencia","vacina_dataaplicacao","vacina_descricao_dose","vacina_codigo","vacina_nome","sistema_origem","data_importacao_rnds","id_sistema_origem"]
         for x in range(0,33):  
-            if(self.newdados[x]=='""'):
+            if(self.newdados[x]=='""' or self.newdados[x]=='" "'):
                 print("DADOS INCOMPLETOS DO DOCID:",self.newdados[0],"CATEGORIA: ",categorias[x])
 
     def validarIdades(self):
@@ -29,5 +29,18 @@ class Validacoes:
             if(ano<1891 or ano>2021 or mes>12 or mes<1 or dia>31 or dia<1):
                 print("DATA DE NASCIMENTO INVALIDA - DOCID",self.newdados[0])
             
+    def validarUF(self):
+        listaEstadosBrasil = ['"AC"', '"AL"', '"AM"', '"AP"', '"BA"', '"CE"', '"DF"', '"ES"', '"GO"', '"MA"', '"MG"', '"MS"', '"MT"','"PA"', '"PB"', '"PE"', '"PI"', '"PR"', '"RJ"', '"RN"', '"RO"', '"RR"', '"RS"', '"SC"', '"SE"', '"SP"', '"TO"']
+        if(self.newdados[11] not in listaEstadosBrasil):
+            print("UF errado no docid",self.newdados[0],"VALOR DO CAMPO:",self.newdados[11])
 
-    
+    def validarDatasVacinacao(self):
+        novasdatas = self.newdados[27].split('"')  
+        if(novasdatas[1]!="vacina_dataaplicacao"):
+            separadorDeDatas = novasdatas[1].split('-')
+            ano = int(separadorDeDatas[0])
+            mes = int(separadorDeDatas[1])
+            dia = int(separadorDeDatas[2])
+            if(ano<2020 or mes>12 or mes<0 or dia<1 or dia>31):
+                print("ANO VACINACAO ERRADO NO DOCID",newdados[0],"DATA ERRADA",separadorDeDatas) 
+            
